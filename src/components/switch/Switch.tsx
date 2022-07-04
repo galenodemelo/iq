@@ -33,6 +33,10 @@ export default class Switch extends Component<any, State> {
 
     get switchObject(): HTMLDivElement | null { return this.switchRef.current }
     get handlerObject(): HTMLDivElement | null { return this.handlerRef.current }
+    get progressInPercentage(): number {
+        return this.state.progress / this.state.distanceToDrag * 100
+    }
+
     componentDidMount(): void {
         if (!this.switchObject || !this.handlerObject) return
 
@@ -47,6 +51,7 @@ export default class Switch extends Component<any, State> {
     bind(): void {
         document.addEventListener("mousedown", () => {
             document.addEventListener("mousemove", this.moveHandler, { passive: true })
+            document.addEventListener("mouseup", this.stopHandler, { passive: true })
         }, { passive: true })
     }
 
@@ -72,6 +77,51 @@ export default class Switch extends Component<any, State> {
 
         _this.handlerObject.style.left = `${_this.state.progress}px`
     }
+
+    stopHandler(): void {
+        const _this: Switch = window.switchComponent
+        document.removeEventListener("mousemove", _this.moveHandler)
+
+        const reachedMinimumDistance: boolean = _this.progressInPercentage >= _this.minDistanceToDragInPercentage
+        if (!reachedMinimumDistance) {
+            _this.moveHandlerToStart()
+        } else {
+            _this.moveHandlerToEnd()
+        }
+
+        document.removeEventListener("mouseup", _this.stopHandler)
+    }
+
+    moveHandlerToStart(): void {
+        if (!this.handlerObject) return
+
+        const animationDurationInMilliseconds: number = 500
+        const animationDurationInSeconds: number = 500 / 1000
+
+        this.handlerObject.style.transition = `left ${animationDurationInSeconds}s ease`
+        this.handlerObject.style.left = "0px"
+
+        setTimeout(() => {
+            if (!this.handlerObject) return
+            this.handlerObject.style.transition = ""
+        }, animationDurationInMilliseconds)
+    }
+
+    moveHandlerToEnd(): void {
+        if (!this.handlerObject) return
+
+        const animationDurationInMilliseconds: number = 500
+        const animationDurationInSeconds: number = 500 / 1000
+
+        this.handlerObject.style.transition = `left ${animationDurationInSeconds}s ease`
+        this.handlerObject.style.left = `${this.state.distanceToDrag}px`
+
+        setTimeout(() => {
+            if (!this.handlerObject) return
+            this.handlerObject.style.transition = ""
+        }, animationDurationInMilliseconds)
+    }
+
     render(): React.ReactNode {
         return (
             <div className={styles.switch} ref={this.switchRef}>
