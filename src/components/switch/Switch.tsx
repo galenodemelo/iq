@@ -97,6 +97,7 @@ export default class Switch extends Component<any, State> {
     stopMouseMoving(): void {
         const _this: Switch = window.switchComponent
         document.removeEventListener("mousemove", _this.followMouseMoving)
+        document.removeEventListener("mouseup", _this.stopMouseMoving)
 
         const reachedMinimumDistance: boolean = _this.progressInPercentage >= _this.minDistanceToDragInPercentage
         if (!reachedMinimumDistance) {
@@ -104,8 +105,6 @@ export default class Switch extends Component<any, State> {
         } else {
             _this.moveHandlerToEnd()
         }
-
-        document.removeEventListener("mouseup", _this.stopMouseMoving)
     }
 
     moveHandlerToStart(): void {
