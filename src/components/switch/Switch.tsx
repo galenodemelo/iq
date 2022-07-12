@@ -7,6 +7,10 @@ interface State {
     switchPadding: number
 }
 
+interface Props {
+    onMoveToEnd: Function
+}
+
 declare global {
     interface Window {
         switchComponent: Switch
@@ -25,7 +29,7 @@ export default class Switch extends Component<any, State> {
     poweredOffRef
     switchRef
 
-    constructor(props: {} | Readonly<{}>) {
+    constructor(props: Props) {
         super(props)
         this.activeBackgroundRef = React.createRef<HTMLDivElement>()
         this.handlerRef = React.createRef<HTMLDivElement>()
@@ -124,6 +128,7 @@ export default class Switch extends Component<any, State> {
         this.dropHandlerAnimation()
         this.setState({progress: this.state.distanceToDrag})
         this.moveHandler()
+        this.props.onMoveToEnd()
     }
 
     dropHandlerAnimation() {
