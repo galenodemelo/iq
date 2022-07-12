@@ -9,11 +9,13 @@ interface State {
 
 export default class IndexLayout extends Component<any, State> {
 
+    backdropRef
     videoPlayerRef
 
     constructor() {
         super({})
 
+        this.backdropRef = React.createRef<HTMLDivElement>()
         this.videoPlayerRef = React.createRef<HTMLVideoElement>()
 
         this.state = {
@@ -28,12 +30,14 @@ export default class IndexLayout extends Component<any, State> {
             backdrop: false,
             muted: false
         })
+
+        setTimeout(() => this.backdropRef.current?.remove(), 1000)
     }
 
     render(): React.ReactNode {
         return (
             <div className={styles.home}>
-                <div className={styles.backdrop} data-show={this.state.backdrop}>
+                <div className={styles.backdrop} data-show={this.state.backdrop} ref={this.backdropRef}>
                     <div className={styles.switchWrapper} data-show={this.state.backdrop}>
                         <Switch onMoveToEnd={() => this.showContent()} />
                     </div>
