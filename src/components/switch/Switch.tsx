@@ -17,7 +17,7 @@ declare global {
     }
 }
 
-export default class Switch extends Component<any, State> {
+export default class Switch extends Component<Props, State> {
 
     animationDurationInMilliseconds: number = 500
     animationDurationInSeconds: number = this.animationDurationInMilliseconds / 1000
@@ -70,10 +70,13 @@ export default class Switch extends Component<any, State> {
     }
 
     bind(): void {
-        this.switchObject?.addEventListener("mousedown", (event: MouseEvent) => {
+        this.switchObject?.addEventListener("pointerdown", (event: MouseEvent) => {
             this.followMouseMoving(event)
-            document.addEventListener("mousemove", this.followMouseMoving, { passive: true })
-            document.addEventListener("mouseup", this.stopMouseMoving, { passive: true })
+            document.addEventListener("pointermove", this.followMouseMoving, { passive: true })
+            document.addEventListener("touchmove", this.followTouchMoving, { passive: true })
+
+            document.addEventListener("pointerup", this.stopMouseMoving, { passive: true })
+            document.addEventListener("touchend", this.stopMouseMoving, { passive: true })
         }, { passive: true })
     }
 
@@ -92,7 +95,15 @@ export default class Switch extends Component<any, State> {
         _this.updatePoweredBoxes()
     }
 
-    followMouseMoving(event: MouseEvent):void {
+    followMouseMoving(event: MouseEvent): void {
+        window.switchComponent.move(event.clientX)
+    }
+
+    followTouchMoving(event: TouchEvent): void {
+        window.switchComponent.move(event.changedTouches[0].clientX)
+    }
+
+    move(pointerPosition: number): void {
         const _this: Switch = window.switchComponent
         if (!_this.switchObject || !_this.handlerObject) return
 
@@ -100,15 +111,18 @@ export default class Switch extends Component<any, State> {
         const padding: number = _this.state.switchPadding
 
         const initialPosition: number = _this.switchObject.offsetLeft + padding
-        let progress: number = event.clientX - initialPosition - handlerWidth / 2
+        let progress: number = pointerPosition - initialPosition - handlerWidth / 2
         _this.setState({progress: progress})
         _this.moveHandler()
     }
 
     stopMouseMoving(): void {
         const _this: Switch = window.switchComponent
-        document.removeEventListener("mousemove", _this.followMouseMoving)
-        document.removeEventListener("mouseup", _this.stopMouseMoving)
+        document.removeEventListener("pointermove", _this.followMouseMoving)
+        document.removeEventListener("touchmove", _this.followTouchMoving)
+
+        document.removeEventListener("pointerup", _this.stopMouseMoving)
+        document.removeEventListener("touchend", _this.stopMouseMoving)
 
         const reachedMinimumDistance: boolean = _this.progressInPercentage >= _this.minDistanceToDragInPercentage
         if (!reachedMinimumDistance) {
