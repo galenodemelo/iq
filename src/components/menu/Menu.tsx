@@ -4,7 +4,7 @@ import styles from "./Menu.module.sass"
 
 export enum MenuLogoType {
     ANIMATED,
-    onSoundButtonClick: Function
+    STATIC
 }
 
 export default abstract class Menu extends Component<any, any> {
@@ -36,6 +36,11 @@ export default abstract class Menu extends Component<any, any> {
             case MenuLogoType.ANIMATED:
                 return <Image src="/img/iq-logo-animated.gif" width={logoWidth} height={logoHeight} layout="fixed" alt="IQ - Powered by people" />
 
+            case MenuLogoType.STATIC:
+                return <Image src="/img/iq-logo.svg" width={logoWidth} height={logoHeight} layout="fixed" alt="IQ - Powered by people" />
+
+            default:
+                throw new Error("Invalid MenuLogoType")
         }
     }
 }
