@@ -17,6 +17,13 @@ export default class Menu extends Component<Props, State> {
         return (
             <header className={styles.menu}>
                 <Image src="/img/iq-logo-animated.gif" key={1} width={300} height={108} layout="fixed" alt="IQ - Powered by people" />
+
+                    <div className={styles.links}>
+                        <Link href="/contact">
+                            <a>Be smart!</a>
+                        </Link>
+                    </div>
+
                     <button className={styles.soundButton} onClick={() => this.props.onSoundButtonClick()}>
                         {this.props.muted
                             ? <Image src="/img/ico-sound-off.svg" layout="fill" alt="Turn on video sound" />
