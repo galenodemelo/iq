@@ -149,7 +149,7 @@ export default class Switch extends Component<Props, State> {
     dropHandlerAnimation() {
         if (this.handlerObject) this.handlerObject.style.transition = `left ${this.animationDurationInSeconds}s ease`
         if (this.activeBackgroundObject) this.activeBackgroundObject.style.transition = `opacity ${this.animationDurationInSeconds}s ease`
-        if (this.poweredOnObject) this.poweredOnObject.style.transition = `width ${this.animationDurationInSeconds}s ease`
+        if (this.poweredOnObject) this.poweredOnObject.style.transition = `width ${this.animationDurationInSeconds}s ease, opacity ${this.animationDurationInSeconds}s ease`
         if (this.poweredOffObject) this.poweredOffObject.style.transition = `width ${this.animationDurationInSeconds}s ease`
 
         setTimeout(() => {
@@ -162,9 +162,10 @@ export default class Switch extends Component<Props, State> {
 
     updateActiveTransparency(): void {
         const _this: Switch = window.switchComponent
-        if (!_this.activeBackgroundObject) return
+        const opacity: number = _this.progressInPercentage / 100
 
-        _this.activeBackgroundObject.style.opacity = `${_this.progressInPercentage / 100}`
+        _this.activeBackgroundObject!.style.opacity = `${opacity}`
+        _this.poweredOnObject!.style.opacity = `${opacity}`
     }
 
     updatePoweredBoxes(): void {
