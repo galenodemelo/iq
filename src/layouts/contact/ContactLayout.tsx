@@ -23,6 +23,10 @@ export default class ContactLayout extends Component {
 
                     <div className={styles.contact}>
                         <ContactForm />
+
+                        <footer className={styles.footer}>
+                            &copy; iQ - Powered by People LLC.
+                        </footer>
                     </div>
                 </div>
             </main>
