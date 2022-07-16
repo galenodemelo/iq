@@ -34,6 +34,8 @@ export default class IndexLayout extends Component<any, State> {
         setTimeout(() => this.backdropRef.current?.remove(), 1000)
     }
 
+    toggleMuted = () => this.setState({ muted: !this.state.muted })
+
     render(): React.ReactNode {
         return (
             <main className={styles.home}>
