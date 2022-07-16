@@ -9,6 +9,16 @@ export default class ContactLayout extends Component {
             <main className={styles.contact}>
                 <MenuContact />
 
+                <div className={styles.content}>
+                    <h1 className={styles.lettering}>
+                        <span>We are</span><br />
+                        <GradientLettering>
+                            the engine<br />
+                            of the<br />
+                            future.
+                        </GradientLettering>
+                    </h1>
+                </div>
             </main>
         )
     }
