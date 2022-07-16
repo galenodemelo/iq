@@ -1,0 +1,30 @@
+.nav
+    display: inline-flex
+    align-items: center
+    gap: 48px
+    transition: opacity 1s ease
+    opacity: 0
+
+    &[data-show="true"]
+        opacity: 1
+
+    .links
+        a
+            display: inline-block
+            color: #fff
+            text-decoration: none
+            font-weight: 700
+            font-size: 2rem
+            letter-spacing: 1px
+            transition: transform .2s ease
+
+            &:hover
+                transform: scale(1.2)
+
+    .soundButton
+        position: relative
+        width: 32px
+        height: 32px
+        background: none
+        border: 0
+        cursor: pointer

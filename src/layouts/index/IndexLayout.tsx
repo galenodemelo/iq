@@ -1,4 +1,4 @@
-import Menu from "@components/menu/Menu"
+import MenuIndex from "@components/menu/index/MenuIndex"
 import Switch from "@components/switch/Switch"
 import React, { Component } from "react"
 import styles from "./IndexLayout.module.sass"
@@ -58,7 +58,7 @@ export default class IndexLayout extends Component<any, State> {
                     </video>
 
                     {this.state.showMenu &&
-                        <Menu muted={this.state.muted} onSoundButtonClick={() => this.toggleMuted()} />
+                        <MenuIndex muted={this.state.muted} onSoundButtonClick={() => this.toggleMuted()} />
                     }
                 </div>
             </main>
