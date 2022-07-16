@@ -7,6 +7,16 @@
     width: 70%
     z-index: 10
 
+    .nav
+        display: inline-flex
+        align-items: center
+        gap: 48px
+        transition: opacity 1s ease
+        opacity: 0
+
+        &[data-show="true"]
+            opacity: 1
+
         .links
             a
                 color: #fff
