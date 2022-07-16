@@ -36,7 +36,7 @@ export default class IndexLayout extends Component<any, State> {
 
     render(): React.ReactNode {
         return (
-            <div className={styles.home}>
+            <main className={styles.home}>
                 <div className={styles.backdrop} data-show={this.state.backdrop} ref={this.backdropRef}>
                     <div className={styles.switchWrapper} data-show={this.state.backdrop}>
                         <Switch onMoveToEnd={() => this.showContent()} />
@@ -49,7 +49,7 @@ export default class IndexLayout extends Component<any, State> {
                         <source src="/videos/teaser.mp4" type="video/mp4" />
                     </video>
                 </div>
-            </div>
+            </main>
         )
     }
 }
