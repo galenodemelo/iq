@@ -1,48 +1,41 @@
 import Image from "next/image"
-import Link from "next/link"
 import { Component, ReactNode } from "react"
 import styles from "./Menu.module.sass"
 
-interface Props {
-    muted: boolean
+export enum MenuLogoType {
+    ANIMATED,
     onSoundButtonClick: Function
 }
 
-interface State {
-    showNav: boolean
-}
+export default abstract class Menu extends Component<any, any> {
 
-export default class Menu extends Component<Props, State> {
+    private logoType: MenuLogoType
 
-    constructor(props: Props) {
+    constructor(props: {}, logoType: MenuLogoType) {
         super(props)
-        this.state = { showNav: false }
-    }
-
-    componentDidMount(): void {
-        setTimeout(() => this.setState({showNav: true}), 2000)
+        this.logoType = logoType
     }
 
     render(): ReactNode {
         return (
             <header className={styles.menu}>
-                <Image src="/img/iq-logo-animated.gif" key={1} width={300} height={108} layout="fixed" alt="IQ - Powered by people" />
+                {this.renderLogo(this.logoType)}
 
-                <nav className={styles.nav} data-show={this.state.showNav}>
-                    <div className={styles.links}>
-                        <Link href="/contact">
-                            <a>Be smart!</a>
-                        </Link>
-                    </div>
-
-                    <button className={styles.soundButton} onClick={() => this.props.onSoundButtonClick()}>
-                        {this.props.muted
-                            ? <Image src="/img/ico-sound-off.svg" layout="fill" alt="Turn on video sound" />
-                            : <Image src="/img/ico-sound-on.svg" layout="fill" alt="Turn off video sound" />
-                        }
-                    </button>
-                </nav>
+                {this.renderNavigation()}
             </header>
         )
+    }
+
+    abstract renderNavigation(): ReactNode
+
+    private renderLogo(logoType: MenuLogoType): ReactNode {
+        const logoWidth: number = 300
+        const logoHeight: number = 108
+
+        switch (logoType) {
+            case MenuLogoType.ANIMATED:
+                return <Image src="/img/iq-logo-animated.gif" width={logoWidth} height={logoHeight} layout="fixed" alt="IQ - Powered by people" />
+
+        }
     }
 }
