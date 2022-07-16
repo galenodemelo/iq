@@ -1,0 +1,37 @@
+.menu
+    position: fixed
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin: 0 auto
+    top: 48px
+    left: 0
+    right: 0
+    width: 70%
+    z-index: 10
+
+    .nav
+        display: inline-flex
+        align-items: center
+        gap: 48px
+        transition: opacity 1s ease
+        opacity: 0
+
+        &[data-show="true"]
+            opacity: 1
+
+        .links
+            a
+                color: #fff
+                text-decoration: none
+                font-weight: 700
+                font-size: 2rem
+                letter-spacing: 1px
+
+        .soundButton
+            position: relative
+            width: 32px
+            height: 32px
+            background: none
+            border: 0
+            cursor: pointer

@@ -1,3 +1,4 @@
+import Menu from "@components/menu/Menu"
 import Switch from "@components/switch/Switch"
 import React, { Component } from "react"
 import styles from "./IndexLayout.module.sass"
@@ -5,6 +6,7 @@ import styles from "./IndexLayout.module.sass"
 interface State {
     backdrop: boolean
     muted: boolean
+    showMenu: boolean
 }
 
 export default class IndexLayout extends Component<any, State> {
@@ -12,15 +14,16 @@ export default class IndexLayout extends Component<any, State> {
     backdropRef
     videoPlayerRef
 
-    constructor() {
-        super({})
+    constructor(props: {}) {
+        super(props)
 
         this.backdropRef = React.createRef<HTMLDivElement>()
         this.videoPlayerRef = React.createRef<HTMLVideoElement>()
 
         this.state = {
             backdrop: true,
-            muted: true
+            muted: true,
+            showMenu: false
         }
     }
 
@@ -31,12 +34,17 @@ export default class IndexLayout extends Component<any, State> {
             muted: false
         })
 
-        setTimeout(() => this.backdropRef.current?.remove(), 1000)
+        setTimeout(() => {
+            this.backdropRef.current?.remove()
+            this.setState({showMenu: true})
+        }, 1000)
     }
+
+    toggleMuted = () => this.setState({ muted: !this.state.muted })
 
     render(): React.ReactNode {
         return (
-            <div className={styles.home}>
+            <main className={styles.home}>
                 <div className={styles.backdrop} data-show={this.state.backdrop} ref={this.backdropRef}>
                     <div className={styles.switchWrapper} data-show={this.state.backdrop}>
                         <Switch onMoveToEnd={() => this.showContent()} />
@@ -48,8 +56,12 @@ export default class IndexLayout extends Component<any, State> {
                         <source src="/videos/teaser.webm" type="video/webm" />
                         <source src="/videos/teaser.mp4" type="video/mp4" />
                     </video>
+
+                    {this.state.showMenu &&
+                        <Menu muted={this.state.muted} onSoundButtonClick={() => this.toggleMuted()} />
+                    }
                 </div>
-            </div>
+            </main>
         )
     }
 }
