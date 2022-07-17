@@ -1,0 +1,47 @@
+@import @styles/constants
+
+.contactSuccess
+    .content
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-direction: column
+        height: 85vh
+        text-align: center
+        color: #ffffff
+
+        @include centered-content
+
+        .lettering
+            margin-top: 16vh
+            width: 100%
+            font-size: 3rem
+
+            > span
+                position: relative
+                left: -14.5rem
+                bottom: -3.5rem
+
+            > big
+                font-weight: 700
+                font-size: 12rem
+
+        .paragraph
+            margin-top: 5vh
+            width: 100%
+            font-size: 2rem
+            line-height: 1.2
+
+            > b
+                font-weight: 700
+
+            .icon
+                display: inline-block
+                position: relative
+                top: .6rem
+                left: 1rem
+                transition: transform .2s ease
+
+                &:hover
+                    transform: scale(1.2)
+                    cursor: pointer
