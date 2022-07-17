@@ -11,12 +11,9 @@ export default class ContactSuccessLayout extends Component<any, any> {
                 <MenuContact />
 
                 <div className={styles.content}>
-                    <h1 className={styles.lettering}>
-                        <span>You chose</span><br />
-                        <big>
-                            <GradientLettering>
-                                wisely!
-                            </GradientLettering>
+                        <span className={styles.small}>You chose</span><br />
+                        <big className={styles.big}>
+                            wisely!
                         </big>
                     </h1>
 

@@ -1,5 +1,4 @@
 import ContactForm from "@components/form/ContactForm"
-import GradientLettering from "@components/gradientlettering/GradientLettering"
 import MenuContact from "@components/menu/contact/MenuContact"
 import { Component, ReactNode } from "react"
 import styles from "./ContactLayout.module.sass"
@@ -14,11 +13,11 @@ export default class ContactLayout extends Component {
                 <div className={styles.content}>
                     <h1 className={styles.lettering}>
                         <span>We are</span><br />
-                        <GradientLettering>
+                        <span className={styles.gradient}>
                             the engine<br />
                             of the<br />
                             future.
-                        </GradientLettering>
+                        </span>
                     </h1>
 
                     <div className={styles.contact}>

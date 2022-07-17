@@ -11,7 +11,12 @@
         padding: 4px
         border-radius: 100px
         box-sizing: border-box
-        @include gradient-animation-properties
+        animation-name: gradient-flow
+        animation-duration: 2s
+        animation-fill-mode: forwards
+        animation-iteration-count: infinite
+        animation-play-state: running
+        animation-timing-function: linear
 
         input
             padding: 24px 48px
