@@ -1,22 +1,39 @@
-import GradientLettering from "@components/gradientlettering/GradientLettering"
 import MenuContact from "@components/menu/contact/MenuContact"
 import Image from "next/image"
-import { Component, ReactNode } from "react"
+import React, { Component, ReactNode } from "react"
+import PoppingLetteringAnimation from "src/animations/PoppingLetteringAnimation"
 import styles from "./ContactSuccessLayout.module.sass"
 
-export default class ContactSuccessLayout extends Component<any, any> {
+interface State {
+    canSplitLetters: boolean
+}
+
+export default class ContactSuccessLayout extends Component<any, State> {
+
+    letteringRef
+
+    constructor(props: {}) {
+        super(props)
+        this.letteringRef = React.createRef<HTMLHeadingElement>()
+        this.state = { canSplitLetters: false }
+    }
+
+    componentDidMount(): void {
+        const letteringAnimation: PoppingLetteringAnimation = new PoppingLetteringAnimation(this.letteringRef.current)
+        letteringAnimation.fixGradientLettering(styles.big)
+        letteringAnimation.run()
+    }
+
     render(): ReactNode {
         return (
             <main className={styles.contactSuccess}>
                 <MenuContact />
 
                 <div className={styles.content}>
-                    <h1 className={styles.lettering}>
-                        <span>You chose</span><br />
-                        <big>
-                            <GradientLettering>
-                                wisely!
-                            </GradientLettering>
+                    <h1 className={styles.lettering} ref={this.letteringRef}>
+                        <span className={styles.small}>You chose</span><br />
+                        <big className={styles.big}>
+                            wisely!
                         </big>
                     </h1>
 
