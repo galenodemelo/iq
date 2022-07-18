@@ -7,6 +7,7 @@ interface State {
     backdrop: boolean
     muted: boolean
     showMenu: boolean
+    viewport: "landscape" | "portrait" | null
 }
 
 export default class IndexLayout extends Component<any, State> {
@@ -23,15 +24,21 @@ export default class IndexLayout extends Component<any, State> {
         this.state = {
             backdrop: true,
             muted: true,
-            showMenu: false
+            showMenu: false,
+            viewport: null
         }
+    }
+
+    componentDidMount(): void {
+        const isLandscapeViewport: boolean = window.innerHeight < window.innerWidth
+        this.setState({viewport: isLandscapeViewport ? "landscape" : "portrait"})
     }
 
     showContent(): void {
         this.videoPlayerRef.current?.play()
         this.setState({
             backdrop: false,
-            muted: false
+            muted: this.state.viewport == "portrait"
         })
 
         setTimeout(() => {
@@ -53,8 +60,19 @@ export default class IndexLayout extends Component<any, State> {
 
                 <div className={styles.content}>
                     <video className={styles.video} controls={false} preload="metadata" muted={this.state.muted} loop={true} ref={this.videoPlayerRef}>
-                        <source src="/videos/teaser.webm" type="video/webm" />
-                        <source src="/videos/teaser.mp4" type="video/mp4" />
+                        {this.state.viewport == "landscape" &&
+                            <>
+                                <source src="/videos/teaser.1920.webm" type="video/webm" />
+                                <source src="/videos/teaser.1920.mp4" type="video/mp4" />
+                            </>
+                        }
+
+                        {this.state.viewport == "portrait" &&
+                            <>
+                                <source src="/videos/teaser.vertical.webm" type="video/webm" />
+                                <source src="/videos/teaser.vertical.mp4" type="video/mp4" />
+                            </>
+                        }
                     </video>
 
                     {this.state.showMenu &&
