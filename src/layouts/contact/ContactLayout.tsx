@@ -1,9 +1,23 @@
 import ContactForm from "@components/form/ContactForm"
 import MenuContact from "@components/menu/contact/MenuContact"
-import { Component, ReactNode } from "react"
+import React, { Component, ReactNode } from "react"
+import PoppingLetteringAnimation from "src/animations/PoppingLetteringAnimation"
 import styles from "./ContactLayout.module.sass"
 
 export default class ContactLayout extends Component {
+
+    letteringRef
+
+    constructor(props: {}) {
+        super(props)
+        this.letteringRef = React.createRef<HTMLHeadingElement>()
+    }
+
+    componentDidMount(): void {
+        const letteringAnimation: PoppingLetteringAnimation = new PoppingLetteringAnimation(this.letteringRef.current)
+        letteringAnimation.fixGradientLettering(styles.gradient)
+        letteringAnimation.run()
+    }
 
     render(): ReactNode {
         return (
@@ -11,13 +25,11 @@ export default class ContactLayout extends Component {
                 <MenuContact />
 
                 <div className={styles.content}>
-                    <h1 className={styles.lettering}>
+                    <h1 className={styles.lettering} ref={this.letteringRef}>
                         <span>We are</span><br />
-                        <span className={styles.gradient}>
-                            the engine<br />
-                            of the<br />
-                            future.
-                        </span>
+                        <div className={styles.gradient}>the engine</div>
+                        <div className={styles.gradient}>of the</div>
+                        <div className={styles.gradient}>future</div>
                     </h1>
 
                     <div className={styles.contact}>
