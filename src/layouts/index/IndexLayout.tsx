@@ -3,25 +3,31 @@ import Switch from "@components/switch/Switch"
 import React, { Component } from "react"
 import styles from "./IndexLayout.module.sass"
 
+interface Props {
+    active: boolean
+}
+
 interface State {
+    active: boolean
     backdrop: boolean
     muted: boolean
     showMenu: boolean
     viewport: "landscape" | "portrait" | null
 }
 
-export default class IndexLayout extends Component<any, State> {
+export default class IndexLayout extends Component<Props, State> {
 
     backdropRef
     videoPlayerRef
 
-    constructor(props: {}) {
+    constructor(props: Props) {
         super(props)
 
         this.backdropRef = React.createRef<HTMLDivElement>()
         this.videoPlayerRef = React.createRef<HTMLVideoElement>()
 
         this.state = {
+            active: props.active,
             backdrop: true,
             muted: true,
             showMenu: false,
@@ -32,6 +38,14 @@ export default class IndexLayout extends Component<any, State> {
     componentDidMount(): void {
         const isLandscapeViewport: boolean = window.innerHeight < window.innerWidth
         this.setState({viewport: isLandscapeViewport ? "landscape" : "portrait"})
+    }
+
+    componentDidUpdate(): void {
+        if (this.props.active != this.state.active) {
+            this.setState({ active: this.props.active }, () => {
+                if (!this.state.active) this.toggleMuted(true)
+            })
+        }
     }
 
     showContent(): void {
@@ -47,7 +61,7 @@ export default class IndexLayout extends Component<any, State> {
         }, 1000)
     }
 
-    toggleMuted = () => this.setState({ muted: !this.state.muted })
+    toggleMuted = (state ?: boolean) => this.setState({ muted: state !== undefined ? state : !this.state.muted })
 
     render(): React.ReactNode {
         return (
