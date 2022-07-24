@@ -2,6 +2,16 @@
 @import @styles/constants
 
 .contact
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    min-height: 100%
+    clip-path: circle(0%)
+    transition: clip-path 1.4s ease
+    background-color: $color-black
+    z-index: 10
+
     .content
         display: flex
         align-items: flex-end
@@ -21,7 +31,7 @@
                 margin: -4vh 0
                 @include gradient-animation-properties
 
-        .contact
+        .form
             flex: 1 1 0
 
             .footer
