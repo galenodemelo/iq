@@ -2,8 +2,25 @@ $path-fonts: "/fonts"
 
 $color-black: #16181a
 
+@mixin for-big-desktop-only
+    @media screen and (min-width: 1441px)
+        @content
+
+@mixin for-desktop-only
+    @media screen and (min-width: 1200px) and (max-width: 1440px)
+        @content
+
+@mixin for-mobile-down
+    @media screen and (max-width: 600px)
+        @content
+
 @mixin centered-content
     margin: 0 auto
     width: 100%
-    padding: 0 15%
     box-sizing: border-box
+
+    @include for-big-desktop-only
+        padding: 0 15%
+
+    @include for-desktop-only
+        max-width: 1080px

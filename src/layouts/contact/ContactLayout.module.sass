@@ -17,8 +17,13 @@
         align-items: flex-end
         justify-content: space-between
         gap: 15%
-        height: 85vh
         @include centered-content
+
+        @include for-big-desktop-only
+            height: 85vh
+
+        @include for-desktop-only
+            height: 92vh
 
         .lettering
             font-size: 8vw
@@ -36,5 +41,11 @@
 
             .footer
                 text-align: right
-                margin-top: 48px
                 color: #ffffff
+
+                @include for-big-desktop-only
+                    margin-top: 48px
+
+                @include for-desktop-only
+                    margin-top: 24px
+
