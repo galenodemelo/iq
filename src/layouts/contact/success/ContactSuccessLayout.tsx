@@ -1,4 +1,5 @@
 import MenuContact from "@components/menu/contact/MenuContact"
+import anime from "animejs"
 import Image from "next/image"
 import React, { Component, ReactNode } from "react"
 import PoppingLetteringAnimation from "src/animations/PoppingLetteringAnimation"
@@ -21,6 +22,15 @@ export default class ContactSuccessLayout extends Component<any, State> {
     componentDidMount(): void {
         const letteringAnimation: PoppingLetteringAnimation = new PoppingLetteringAnimation(this.letteringRef.current)
         letteringAnimation.fixGradientLettering(styles.big)
+        letteringAnimation.onEnd(() => {
+            anime.timeline().add({
+                targets: `.${styles.paragraph}`,
+                opacity: [0, 1],
+                translateY: [40, 0],
+                duration: 1200,
+                delay: (el, i) => 400 * (i+1)
+            }).finished
+        })
         letteringAnimation.run()
     }
 
