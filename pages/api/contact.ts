@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js"
 import { NextApiRequest, NextApiResponse } from "next"
+import SendGridManager from "src/libs/SendGridManager"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
@@ -18,6 +19,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const wasStoredInDatabase: boolean = await storeInDatabase(requestData)
         if (!wasStoredInDatabase) {
             res.status(500).json({success: false, errorList: ["An unexpected error occurred. Please, try again later"]})
+            return
+        }
+
+        const mailWasSent: boolean = await SendGridManager.send(
+            `Site contact form - ${requestData.fullName}`,
+            buildMailHtml(requestData),
+            requestData.email,
+            requestData.email
+        )
+        if (!mailWasSent && process.env.NODE_ENV != "development") {
+            res.status(500).json({success: false, errorList: ["Mail wasn't send. Please try again"]})
             return
         }
     } catch (error) {
@@ -75,4 +87,14 @@ async function storeInDatabase(requestData: ContactRequestDTO): Promise<boolean>
     }
 
     return true
+}
+
+function buildMailHtml(requestData: ContactRequestDTO): string {
+    let fieldList: Array<string> = []
+    fieldList.push(`<strong>Full name</strong>: ${requestData.fullName}`)
+    fieldList.push(`<strong>E-mail</strong>: ${requestData.email}`)
+    fieldList.push(`<strong>Phone Number</strong>: ${requestData.phone}`)
+
+    return `<h1>Contact form</h1>
+            ${fieldList.join("<br />")}`
 }
