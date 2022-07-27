@@ -32,6 +32,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             res.status(500).json({success: false, errorList: ["Mail wasn't send. Please try again"]})
             return
         }
+
+        res.status(200).json({success: true, message: "Contact sent successfully"})
     } catch (error) {
         console.error(`api/contact >> ${JSON.stringify(req.body)}`, error)
         res.status(500).json({success: false, errorList: ["Internal server error"]})
