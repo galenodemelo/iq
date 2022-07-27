@@ -1,3 +1,4 @@
+import { createClient } from "@supabase/supabase-js"
 import { NextApiRequest, NextApiResponse } from "next"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -11,6 +12,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const errorList: Array<string> = await validateRequestData(requestData)
         if (errorList.length > 0) {
             res.status(422).json({success: false, errorList: errorList})
+            return
+        }
+
+        const wasStoredInDatabase: boolean = await storeInDatabase(requestData)
+        if (!wasStoredInDatabase) {
+            res.status(500).json({success: false, errorList: ["An unexpected error occurred. Please, try again later"]})
             return
         }
     } catch (error) {
@@ -46,4 +53,26 @@ async function validateRequestData(requestData: ContactRequestDTO): Promise<Arra
     if (!requestData.recaptchaToken.length) errorList.push("Missing ReCAPTCHA Token")
 
     return errorList
+}
+
+async function storeInDatabase(requestData: ContactRequestDTO): Promise<boolean> {
+    if (process.env.NODE_ENV == "development") return true
+
+    const supabaseUrl: string = process.env.SUPABASE_URL ?? ""
+    const supabaseApiKey: string = process.env.SUPABASE_API_KEY ?? ""
+
+    const supabase = createClient(supabaseUrl, supabaseApiKey)
+    const { data, error } = await supabase
+        .from("contact_form")
+        .insert([
+            { client: "iq", payload: JSON.stringify(requestData) }
+        ])
+
+
+    if (error) {
+        console.error(`storeInDatabase >> RequestBody: ${JSON.stringify(requestData)}`, error)
+        return false
+    }
+
+    return true
 }
