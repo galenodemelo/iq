@@ -66,7 +66,29 @@ async function validateRequestData(requestData: ContactRequestDTO): Promise<Arra
 
     if (!requestData.recaptchaToken.length) errorList.push("Missing ReCAPTCHA Token")
 
+    if (!errorList.length) {
+        const isRecaptchaValid: boolean = await validateRecaptchaToken(requestData.recaptchaToken)
+        if (!isRecaptchaValid) errorList.push("Invalid ReCAPTCHA. Try again.")
+    }
+
     return errorList
+}
+
+async function validateRecaptchaToken(recaptchaToken: string): Promise<boolean> {
+    const recaptchaUrl: string = "https://www.google.com/recaptcha/api/siteverify"
+    const response: Response = await fetch(recaptchaUrl, {
+        method: "POST",
+        headers: new Headers({"Content-Type": "application/x-www-form-urlencoded"}),
+        body: new URLSearchParams({
+            secret: process.env.GOOGLE_RECAPTCHA_SECRET ?? "",
+            response: recaptchaToken
+        })
+    })
+
+    const responseJson: any = await response.json()
+    if (!responseJson.success) console.error("")
+
+    return responseJson.success
 }
 
 async function storeInDatabase(requestData: ContactRequestDTO): Promise<boolean> {

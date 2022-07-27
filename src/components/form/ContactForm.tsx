@@ -1,5 +1,6 @@
 import Image from "next/image"
 import React, { Component, ReactNode } from "react"
+import ReCAPTCHA from "react-google-recaptcha"
 import styles from "./ContactForm.module.sass"
 
 type State = {
@@ -9,9 +10,12 @@ type State = {
 export default class ContactForm extends Component<any, State> {
 
     formReference: React.RefObject<HTMLFormElement>
+    recaptchaReference: React.RefObject<ReCAPTCHA>
+
     constructor(props: {}) {
         super(props)
         this.formReference = React.createRef<HTMLFormElement>()
+        this.recaptchaReference = React.createRef<ReCAPTCHA>()
 
         this.state = { isSubmiting: false }
         this.send = this.send.bind(this)
@@ -19,9 +23,19 @@ export default class ContactForm extends Component<any, State> {
 
     async send(): Promise<void> {
         if (!this.formReference.current) return
+        if (!this.recaptchaReference.current) return
         try {
             this.setState({ isSubmiting: true })
+
+            const recaptchaToken: string | null = await this.recaptchaReference.current.executeAsync()
+            if (!recaptchaToken?.length) {
+                alert("Failed to verify ReCAPTCHA. Please, try again")
+                return
+            }
+
             const formData: FormData = new FormData(this.formReference.current)
+            formData.append("recaptchaToken", recaptchaToken)
+
             const formAction: string = this.formReference.current.getAttribute("action")!.toString()
             const formMethod: string = this.formReference.current.getAttribute("method")!.toString()
             const formDataAsJson: string = JSON.stringify(Object.fromEntries(formData))
@@ -32,6 +46,7 @@ export default class ContactForm extends Component<any, State> {
                 body: formDataAsJson
             })
             const responseJson: { success: boolean, errorList?: Array<string>, message?: string } = await response.json()
+            this.recaptchaReference.current.reset()
             if (!responseJson.success) {
                 alert(responseJson.errorList?.join("\n"))
                 return
@@ -41,6 +56,7 @@ export default class ContactForm extends Component<any, State> {
             this.formReference.current.reset()
         } catch (error) {
             console.error(error)
+            this.recaptchaReference.current.reset()
             alert("An unexpected error ocurred. Please, contact the support")
         } finally {
             this.setState({ isSubmiting: false })
@@ -68,6 +84,11 @@ export default class ContactForm extends Component<any, State> {
                 <button type="button" className={styles.btoSubmit} disabled={this.state.isSubmiting} onClick={this.send}>
                     <Image src="/img/ico-gradient-arrow.svg" layout="fill" alt="Send button" />
                 </button>
+
+                <ReCAPTCHA
+                    ref={this.recaptchaReference}
+                    size="invisible"
+                    sitekey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITEKEY ?? ""} />
             </form>
         )
     }
