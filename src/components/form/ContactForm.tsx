@@ -2,7 +2,30 @@ import Image from "next/image"
 import { Component, ReactNode } from "react"
 import styles from "./ContactForm.module.sass"
 
-export default class ContactForm extends Component<any, any> {
+type State = {
+    isSubmiting: boolean
+}
+
+export default class ContactForm extends Component<any, State> {
+
+    constructor(props: {}) {
+        super(props)
+        this.state = { isSubmiting: false }
+        this.send = this.send.bind(this)
+    }
+
+    async send(): Promise<void> {
+        try {
+            this.setState({ isSubmiting: true })
+    }
+        } catch (error) {
+            console.error(error)
+            alert("An unexpected error ocurred. Please, contact the support")
+        } finally {
+            this.setState({ isSubmiting: false })
+        }
+    }
+
     render(): ReactNode {
         return (
             <form className={styles.contactForm} action="/api/contact/contact" method="POST" autoComplete="off">
@@ -21,7 +44,7 @@ export default class ContactForm extends Component<any, any> {
                     contact me via e-mail and cell phone.
                 </p>
 
-                <button type="submit" className={styles.submit}>
+                <button type="button" className={styles.btoSubmit} disabled={this.state.isSubmiting} onClick={this.send}>
                     <Image src="/img/ico-gradient-arrow.svg" layout="fill" alt="Send button" />
                 </button>
             </form>
