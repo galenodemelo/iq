@@ -73,10 +73,9 @@ export default class IndexLayout extends Component<Props, State> {
                 </div>
 
                 <div className={styles.content}>
-                    <video className={styles.video} controls={false} preload="metadata" muted={this.state.muted} loop={true} ref={this.videoPlayerRef}>
+                    <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef}>
                         {this.state.viewport == "landscape" &&
                             <>
-                                <source src="/videos/teaser.1920.webm" type="video/webm" />
                                 <source src="/videos/teaser.1920.mp4" type="video/mp4" />
                             </>
                         }
