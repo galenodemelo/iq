@@ -30,14 +30,14 @@ export default abstract class Menu extends Component<any, any> {
 
     private renderLogo(logoType: MenuLogoType): ReactNode {
         const logoWidth: number = 300
-        const logoHeight: number = 108
+        const logoHeight: number = 60
 
         switch (logoType) {
             case MenuLogoType.ANIMATED:
                 return <Image src="/img/iq-logo-animated.gif" width={logoWidth} height={logoHeight} layout="fixed" alt="IQ - Powered by people" />
 
             case MenuLogoType.STATIC:
-                return <Image src="/img/iq-logo.svg" width={logoWidth} height={logoHeight} layout="fixed" alt="IQ - Powered by people" />
+                return <Image src="/img/iq-logo.png" width={logoWidth} height={logoHeight} layout="fixed" alt="IQ - Powered by people" />
 
             default:
                 throw new Error("Invalid MenuLogoType")
