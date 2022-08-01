@@ -65,7 +65,6 @@ export default class ContactLayout extends Component<Props, any> {
         }
 
         const closeButtonPosition = this.closeRef.current!.getBoundingClientRect()
-        console.log(closeButtonPosition)
         const xPosition: number = closeButtonPosition.x + closeButtonPosition.width * 1.2
         const yPosition: number = closeButtonPosition.y
         this.containerRef.current!.style.clipPath = `circle(0% at ${xPosition}px ${yPosition}px)`
