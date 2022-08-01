@@ -17,11 +17,14 @@
         border-radius: 100px
         box-sizing: border-box
         animation-name: gradient-flow
-        animation-duration: 2s
+        animation-duration: 4s
         animation-fill-mode: forwards
         animation-iteration-count: infinite
-        animation-play-state: running
+        animation-play-state: paused
         animation-timing-function: linear
+
+        &:focus-within
+            animation-play-state: running
 
         input
             background-color: #ffffff
