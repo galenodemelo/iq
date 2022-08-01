@@ -34,10 +34,10 @@ export default abstract class Menu extends Component<any, any> {
 
         switch (logoType) {
             case MenuLogoType.ANIMATED:
-                return <Image src="/img/iq-logo-animated.gif" width={logoWidth} height={logoHeight} layout="fixed" alt="IQ - Powered by people" />
+                return <Image src="/img/iq-logo-animated.gif" width={logoWidth} height={logoHeight} alt="IQ - Powered by people" />
 
             case MenuLogoType.STATIC:
-                return <Image src="/img/iq-logo.png" width={logoWidth} height={logoHeight} layout="fixed" alt="IQ - Powered by people" />
+                return <Image src="/img/iq-logo.png" width={logoWidth} height={logoHeight} alt="IQ - Powered by people" />
 
             default:
                 throw new Error("Invalid MenuLogoType")
