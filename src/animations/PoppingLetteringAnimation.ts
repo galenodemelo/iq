@@ -4,21 +4,26 @@ import Animation from "./Animation"
 // Source: https://tobiasahlin.com/moving-letters/#9
 export default class PoppingLetteringAnimation implements Animation {
 
+    private classToFix: string | null
+    private target: React.RefObject<HTMLElement>
+    private executed: boolean = false
+
     callback: Function = () => {}
     letterClass: string = "poppingLetteringLetter"
     targetClass: string = `.${this.letterClass}`
     onUpdate: Function = () => {}
 
-    constructor(target: Element | null) {
-        this.splitLetters(target)
+    constructor(target: React.RefObject<HTMLElement>, classToFix: string | null = null) {
+        this.target = target
+        this.classToFix = classToFix
     }
 
     onEnd(callback: Function): void {
         this.callback = callback
     }
 
-    fixGradientLettering(classToBeAdded: string): void {
-        const elementList: NodeListOf<HTMLElement> = document.querySelectorAll(`.${classToBeAdded} ${this.targetClass}`)
+    fixGradientLettering(): void {
+        const elementList: NodeListOf<HTMLElement> = document.querySelectorAll(`.${this.classToFix} ${this.targetClass}`)
         elementList.forEach((element: HTMLElement, index: number) => {
             element.style.color = "#1EBD98"
             element.style.animationPlayState = "paused"
@@ -33,6 +38,12 @@ export default class PoppingLetteringAnimation implements Animation {
     }
 
     async run(): Promise<void> {
+        if (this.executed) return
+        this.executed = true
+
+        this.splitLetters(this.target.current)
+        if (this.classToFix) this.fixGradientLettering()
+
         await anime.timeline().add({
             targets: this.targetClass,
             scale: [0, 1],

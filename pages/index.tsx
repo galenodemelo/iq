@@ -27,10 +27,8 @@ export default function IndexController(props: any) {
             </CustomHeader>
 
             <IndexLayout active={path == "/"} />
-            <ContactLayout active={path.includes("/contact")} />
-            {path == "/contact/success" &&
-                <ContactSuccessLayout />
-            }
+            <ContactLayout active={path == "/contact"} />
+            <ContactSuccessLayout active={path == "/contact/success"}  />
         </>
     )
 }

@@ -1,42 +1,33 @@
 import ContactForm from "@components/form/ContactForm"
 import MenuContact from "@components/menu/contact/MenuContact"
-import React, { Component, ReactNode } from "react"
+import React, { ReactNode } from "react"
+import CircleExpanding, { CircleExpandingProps } from "src/animations/CircleExpanding"
 import PoppingLetteringAnimation from "src/animations/PoppingLetteringAnimation"
 import styles from "./ContactLayout.module.sass"
 
-interface Props {
-    active: boolean
-}
+export default class ContactLayout extends CircleExpanding<CircleExpandingProps, any> {
 
-export default class ContactLayout extends Component<Props, any> {
+    letteringRef: React.RefObject<HTMLHeadingElement>
+    letteringAnimation: PoppingLetteringAnimation
 
-    closeRef
-    containerRef
-    letteringRef
-
-    constructor(props: Props) {
+    constructor(props: CircleExpandingProps) {
         super(props)
-        this.closeRef = React.createRef<HTMLAnchorElement>()
-        this.containerRef = React.createRef<HTMLElement>()
         this.letteringRef = React.createRef<HTMLHeadingElement>()
-    }
-
-    componentDidMount(): void {
-        const letteringAnimation: PoppingLetteringAnimation = new PoppingLetteringAnimation(this.letteringRef.current)
-        letteringAnimation.fixGradientLettering(styles.gradient)
-        letteringAnimation.run()
-
-        this.buildClipPath()
+        this.letteringAnimation = new PoppingLetteringAnimation(this.letteringRef, styles.gradient)
     }
 
     componentDidUpdate(): void {
-        this.buildClipPath()
+        super.componentDidUpdate()
+
+        console.log("Contact", this.props.active)
+        if (!this.props.active) return
+        this.letteringAnimation.run()
     }
 
     render(): ReactNode {
         return (
             <main className={styles.contact} data-active={this.props.active} ref={this.containerRef}>
-                <MenuContact closeButtonRef={this.closeRef} />
+                <MenuContact closeButtonRef={this.closeButtonRef} />
 
                 <div className={styles.content}>
                     <h1 className={styles.lettering} ref={this.letteringRef}>
@@ -56,17 +47,5 @@ export default class ContactLayout extends Component<Props, any> {
                 </div>
             </main>
         )
-    }
-
-    private buildClipPath(): void {
-        if (this.props.active) {
-            this.containerRef.current!.style.clipPath = "circle(100%)"
-            return
-        }
-
-        const closeButtonPosition = this.closeRef.current!.getBoundingClientRect()
-        const xPosition: number = closeButtonPosition.x + closeButtonPosition.width * 1.2
-        const yPosition: number = closeButtonPosition.y
-        this.containerRef.current!.style.clipPath = `circle(0% at ${xPosition}px ${yPosition}px)`
     }
 }

@@ -1,28 +1,24 @@
 import MenuContact from "@components/menu/contact/MenuContact"
 import anime from "animejs"
 import Image from "next/image"
-import React, { Component, ReactNode } from "react"
+import React, { ReactNode } from "react"
+import CircleExpanding, { CircleExpandingProps } from "src/animations/CircleExpanding"
 import PoppingLetteringAnimation from "src/animations/PoppingLetteringAnimation"
 import styles from "./ContactSuccessLayout.module.sass"
-
 interface State {
     canSplitLetters: boolean
 }
 
-export default class ContactSuccessLayout extends Component<any, State> {
+export default class ContactSuccessLayout extends CircleExpanding<CircleExpandingProps, State> {
 
-    letteringRef
+    letteringRef: React.RefObject<HTMLHeadingElement>
+    letteringAnimation: PoppingLetteringAnimation
 
-    constructor(props: {}) {
+    constructor(props: CircleExpandingProps) {
         super(props)
         this.letteringRef = React.createRef<HTMLHeadingElement>()
-        this.state = { canSplitLetters: false }
-    }
-
-    componentDidMount(): void {
-        const letteringAnimation: PoppingLetteringAnimation = new PoppingLetteringAnimation(this.letteringRef.current)
-        letteringAnimation.fixGradientLettering(styles.big)
-        letteringAnimation.onEnd(() => {
+        this.letteringAnimation = new PoppingLetteringAnimation(this.letteringRef, styles.big)
+        this.letteringAnimation.onEnd(() => {
             anime.timeline().add({
                 targets: `.${styles.paragraph}`,
                 opacity: [0, 1],
@@ -31,13 +27,21 @@ export default class ContactSuccessLayout extends Component<any, State> {
                 delay: (el, i) => 400 * (i+1)
             }).finished
         })
-        letteringAnimation.run()
+
+        this.state = { canSplitLetters: false }
+    }
+
+    componentDidUpdate(): void {
+        super.componentDidUpdate()
+
+        if (!this.props.active) return
+        this.letteringAnimation.run()
     }
 
     render(): ReactNode {
         return (
-            <main className={styles.contactSuccess}>
-                <MenuContact />
+            <main className={styles.contactSuccess} data-active={this.props.active} ref={this.containerRef}>
+                <MenuContact closeButtonRef={this.closeButtonRef} />
 
                 <div className={styles.content}>
                     <h1 className={styles.lettering} ref={this.letteringRef}>
