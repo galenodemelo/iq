@@ -19,7 +19,6 @@ export default class ContactLayout extends CircleExpanding<CircleExpandingProps,
     componentDidUpdate(): void {
         super.componentDidUpdate()
 
-        console.log("Contact", this.props.active)
         if (!this.props.active) return
         this.letteringAnimation.run()
     }
