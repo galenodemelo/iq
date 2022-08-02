@@ -54,7 +54,7 @@ export default class ContactSuccessLayout extends Component<any, State> {
 
                     <p className={[styles.paragraph, styles.playlist].join(" ")}>
                         in the meantime, enjoy what we're listening on <b>Spotify!</b>
-                        <a className={styles.icon}>
+                        <a href="https://open.spotify.com/playlist/37i9dQZEVXbNG2KDcFcKOF?si=131ea9dd524a4826" className={styles.icon} target="_blank">
                             <Image src="/img/ico-spotify.svg" width={48} height={48} alt="Spotify logo" />
                         </a>
                     </p>
