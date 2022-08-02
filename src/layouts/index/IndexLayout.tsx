@@ -43,8 +43,12 @@ export default class IndexLayout extends Component<Props, State> {
     }
 
     showContent(): void {
-        this.videoPlayerRef.current?.play()
+        const videoPlayerRef: HTMLVideoElement | null = this.videoPlayerRef.current
+        if (!videoPlayerRef) return
+
         this.setState({ backdrop: false })
+        videoPlayerRef.play()
+        if (!videoPlayerRef.hasAttribute("data-mobile")) this.toggleMuted(false)
 
         setTimeout(() => {
             this.backdropRef.current?.remove()
@@ -71,9 +75,9 @@ export default class IndexLayout extends Component<Props, State> {
                     </MediaQuery>
 
                     <MediaQuery orientation="portrait">
-                        <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef}>
-                                <source src="/videos/teaser.vertical.webm" type="video/webm" />
-                                <source src="/videos/teaser.vertical.mp4" type="video/mp4" />
+                        <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef} data-mobile>
+                            <source src="/videos/teaser.vertical.webm" type="video/webm" />
+                            <source src="/videos/teaser.vertical.mp4" type="video/mp4" />
                         </video>
                     </MediaQuery>
 
