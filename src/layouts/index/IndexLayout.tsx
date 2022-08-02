@@ -1,6 +1,7 @@
 import MenuIndex from "@components/menu/index/MenuIndex"
 import Switch from "@components/switch/Switch"
 import React, { Component } from "react"
+import MediaQuery from "react-responsive"
 import styles from "./IndexLayout.module.sass"
 
 interface Props {
@@ -12,7 +13,6 @@ interface State {
     backdrop: boolean
     muted: boolean
     showMenu: boolean
-    viewport: "landscape" | "portrait" | null
 }
 
 export default class IndexLayout extends Component<Props, State> {
@@ -30,14 +30,8 @@ export default class IndexLayout extends Component<Props, State> {
             active: props.active,
             backdrop: true,
             muted: true,
-            showMenu: false,
-            viewport: null
+            showMenu: false
         }
-    }
-
-    componentDidMount(): void {
-        const isLandscapeViewport: boolean = window.innerHeight < window.innerWidth
-        this.setState({viewport: isLandscapeViewport ? "landscape" : "portrait"})
     }
 
     componentDidUpdate(): void {
@@ -50,10 +44,7 @@ export default class IndexLayout extends Component<Props, State> {
 
     showContent(): void {
         this.videoPlayerRef.current?.play()
-        this.setState({
-            backdrop: false,
-            muted: this.state.viewport == "portrait"
-        })
+        this.setState({ backdrop: false })
 
         setTimeout(() => {
             this.backdropRef.current?.remove()
@@ -73,20 +64,18 @@ export default class IndexLayout extends Component<Props, State> {
                 </div>
 
                 <div className={styles.content}>
-                    <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef}>
-                        {this.state.viewport == "landscape" &&
-                            <>
-                                <source src="/videos/teaser.1920.mp4" type="video/mp4" />
-                            </>
-                        }
+                    <MediaQuery orientation="landscape">
+                        <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef}>
+                            <source src="/videos/teaser.1920.mp4" type="video/mp4" />
+                        </video>
+                    </MediaQuery>
 
-                        {this.state.viewport == "portrait" &&
-                            <>
+                    <MediaQuery orientation="portrait">
+                        <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef}>
                                 <source src="/videos/teaser.vertical.webm" type="video/webm" />
                                 <source src="/videos/teaser.vertical.mp4" type="video/mp4" />
-                            </>
-                        }
-                    </video>
+                        </video>
+                    </MediaQuery>
 
                     {this.state.showMenu &&
                         <MenuIndex muted={this.state.muted} onSoundButtonClick={() => this.toggleMuted()} />
