@@ -11,6 +11,9 @@
     @include for-desktop-only
         gap: 16px
 
+    @include for-mobile-down
+        gap: 16px
+
     .field
         width: 100%
         padding: 4px 5px
@@ -40,6 +43,10 @@
                 font-size: 1.6rem
 
             @include for-desktop-only
+                padding: 16px 24px
+                font-size: 1.2rem
+
+            @include for-mobile-down
                 padding: 16px 24px
                 font-size: 1.2rem
 

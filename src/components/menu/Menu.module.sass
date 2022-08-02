@@ -5,8 +5,14 @@
     display: flex
     justify-content: space-between
     align-items: center
-    top: 48px
     left: 0
     right: 0
     z-index: 10
+    max-width: 90%
     @include centered-content
+
+    @include for-desktop-up
+        top: 48px
+
+    @include for-mobile-down
+        top: 16px

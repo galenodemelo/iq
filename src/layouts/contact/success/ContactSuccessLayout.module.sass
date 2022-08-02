@@ -25,24 +25,41 @@
         .lettering
             margin-top: 16vh
             width: 100%
-            font-size: 3rem
+
+            @include for-desktop-up
+                font-size: 3rem
+
+            @include for-mobile-down
+                font-size: 2rem
 
             .small
                 position: relative
-                left: -14.5rem
-                bottom: -3.5rem
+
+                @include for-desktop-up
+                    left: -14.5rem
+                    bottom: -3.5rem
 
             .big
                 font-weight: 700
-                font-size: 12rem
                 @include gradient-animation-properties
+
+                @include for-desktop-up
+                    font-size: 12rem
+
+                @include for-mobile-down
+                    font-size: 6rem
 
         .paragraph
             margin-top: 5vh
             width: 100%
-            font-size: 2rem
             line-height: 1.2
             opacity: 0
+
+            @include for-desktop-up
+                font-size: 2rem
+
+            @include for-mobile-down
+                font-size: 1rem
 
             > b
                 font-weight: 700

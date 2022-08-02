@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { Component, ReactNode } from "react"
+import MediaQuery from "react-responsive"
 import styles from "./Menu.module.sass"
 
 export enum MenuLogoType {
@@ -29,18 +30,30 @@ export default abstract class Menu extends Component<any, any> {
     abstract renderNavigation(): ReactNode
 
     private renderLogo(logoType: MenuLogoType): ReactNode {
-        const logoWidth: number = 300
-        const logoHeight: number = 60
-
+        let imageSrc: string
         switch (logoType) {
             case MenuLogoType.ANIMATED:
-                return <Image src="/img/iq-logo-animated.gif" width={logoWidth} height={logoHeight} alt="IQ - Powered by people" />
+                imageSrc = "/img/iq-logo-animated.gif"
+                break
 
             case MenuLogoType.STATIC:
-                return <Image src="/img/iq-logo.png" width={logoWidth} height={logoHeight} alt="IQ - Powered by people" />
+                imageSrc = "/img/iq-logo.png"
+                break
 
             default:
                 throw new Error("Invalid MenuLogoType")
         }
+
+        return (
+            <>
+                <MediaQuery orientation="landscape">
+                    <Image src={imageSrc} width={300} height={60} alt="IQ - Powered by people" />
+                </MediaQuery>
+
+                <MediaQuery orientation="portrait">
+                    <Image src={imageSrc} width={150} height={30} alt="IQ - Powered by people" />
+                </MediaQuery>
+            </>
+        )
     }
 }

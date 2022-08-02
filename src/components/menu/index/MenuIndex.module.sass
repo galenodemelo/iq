@@ -1,9 +1,16 @@
+@import @styles/constants
+
 .nav
     display: inline-flex
     align-items: center
-    gap: 48px
     transition: opacity 1s ease
     opacity: 0
+
+    @include for-desktop-up
+        gap: 48px
+
+    @include for-mobile-down
+        gap: 24px
 
     &[data-show="true"]
         opacity: 1
@@ -14,9 +21,14 @@
             color: #fff
             text-decoration: none
             font-weight: 700
-            font-size: 2rem
             letter-spacing: 1px
             transition: transform .2s ease
+
+            @include for-desktop-up
+                font-size: 2rem
+
+            @include for-mobile-down
+                font-size: 1rem
 
             &:hover
                 transform: scale(1.2)

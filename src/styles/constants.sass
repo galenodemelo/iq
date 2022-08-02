@@ -10,6 +10,10 @@ $color-black: #16181a
     @media screen and (min-width: 1200px) and (max-width: 1440px)
         @content
 
+@mixin for-desktop-up
+    @media screen and (min-width: 1200px)
+        @content
+
 @mixin for-mobile-down
     @media screen and (max-width: 600px)
         @content
