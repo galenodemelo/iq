@@ -27,8 +27,8 @@ export default class PoppingLetteringAnimation implements Animation {
         this.onUpdate = (anime: AnimeInstance) => elementList.forEach(element => {
             if (element.style.transform != "scale(1)") return
 
-            element.style.color = "transparent"
             element.style.transform = "none"
+            setTimeout(() => element.style.color = "transparent", 50)
         })
     }
 
