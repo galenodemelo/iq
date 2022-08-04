@@ -2,7 +2,10 @@ $path-fonts: "/fonts"
 
 $color-black: #16181a
 
-@mixin for-big-desktop-only
+@mixin for-ultrawide-desktop-up
+    @media screen and (min-width: 1921px)
+        @content
+
 @mixin for-big-desktop-up
     @media screen and (min-width: 1441px)
         @content
