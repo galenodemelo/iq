@@ -18,15 +18,6 @@ export default class ContactSuccessLayout extends CircleExpanding<CircleExpandin
         super(props)
         this.letteringRef = React.createRef<HTMLHeadingElement>()
         this.letteringAnimation = new PoppingLetteringAnimation(this.letteringRef, styles.big)
-        this.letteringAnimation.onEnd(() => {
-            anime.timeline().add({
-                targets: `.${styles.paragraph}`,
-                opacity: [0, 1],
-                translateY: [40, 0],
-                duration: 1200,
-                delay: (el, i) => 400 * (i+1)
-            }).finished
-        })
 
         this.state = { canSplitLetters: false }
     }
@@ -36,6 +27,14 @@ export default class ContactSuccessLayout extends CircleExpanding<CircleExpandin
 
         if (!this.props.active) return
         this.letteringAnimation.run()
+
+        anime.timeline().add({
+            targets: `.${styles.paragraph}`,
+            opacity: [0, 1],
+            translateY: [40, 0],
+            duration: 2000,
+            delay: (el, i) => 500 * (i + 1) + 600
+        })
     }
 
     render(): ReactNode {

@@ -8,7 +8,6 @@ export default class PoppingLetteringAnimation implements Animation {
     private target: React.RefObject<HTMLElement>
     private executed: boolean = false
 
-    callback: Function = () => {}
     letterClass: string = "poppingLetteringLetter"
     targetClass: string = `.${this.letterClass}`
     onUpdate: Function = () => {}
@@ -16,10 +15,6 @@ export default class PoppingLetteringAnimation implements Animation {
     constructor(target: React.RefObject<HTMLElement>, classToFix: string | null = null) {
         this.target = target
         this.classToFix = classToFix
-    }
-
-    onEnd(callback: Function): void {
-        this.callback = callback
     }
 
     fixGradientLettering(): void {
@@ -51,8 +46,6 @@ export default class PoppingLetteringAnimation implements Animation {
             delay: (el, i) => 50 * (i+1),
             update: (anime) => this.onUpdate(anime)
         }).finished
-
-        this.callback()
     }
 
     private splitLetters(target: Element | null): void {
