@@ -16,11 +16,11 @@ export default function IndexController(props: any) {
     return (
         <>
             <CustomHeader>
-                {path == "/" && <title>IQ - Powered by people</title>}
-                {path == "/contact" && <title>IQ - Contact us</title>}
+                {path == "/" && <title>iQ - Powered by people</title>}
+                {path == "/contact" && <title>iQ - Contact us</title>}
                 {path == "/contact/success" &&
                     <>
-                        <title>IQ - Thanks for contactins us</title>
+                        <title>iQ - Thanks for contactins us</title>
                         <meta name="robots" content="noindex" />
                     </>
                 }
