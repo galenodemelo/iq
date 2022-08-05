@@ -82,7 +82,7 @@ export default class ContactForm extends Component<any, State> {
                 </p>
 
                 <button type="button" className={styles.btoSubmit} disabled={this.state.isSubmiting} onClick={this.send}>
-                    <Image src="/img/ico-gradient-arrow.svg" layout="fill" alt="Send button" />
+                    Enviar
                 </button>
 
                 <ReCAPTCHA
