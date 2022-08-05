@@ -1,4 +1,3 @@
-import Image from "next/image"
 import React, { Component, ReactNode } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import styles from "./ContactForm.module.sass"
@@ -25,6 +24,9 @@ export default class ContactForm extends Component<any, State> {
         if (!this.formReference.current) return
         if (!this.recaptchaReference.current) return
         try {
+            const isFormValid: boolean = this.formReference.current.reportValidity()
+            if (!isFormValid) return
+
             this.setState({ isSubmiting: true })
 
             const recaptchaToken: string | null = await this.recaptchaReference.current.executeAsync()
