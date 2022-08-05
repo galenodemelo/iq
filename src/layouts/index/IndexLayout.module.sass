@@ -48,4 +48,9 @@
             left: 0
             width: 100%
             height: 100%
-            object-fit: contain
+
+            @include for-desktop-up
+                object-fit: contain
+
+            @include for-mobile-down
+                object-fit: cover
