@@ -62,11 +62,10 @@ export default class Switch extends Component<Props, State> {
             const handlerWidth: number = this.handlerObject.offsetWidth
             const switchWidth: number = this.switchObject.offsetWidth
             const padding: number = this.state.switchPadding
-            this.setState({distanceToDrag: switchWidth - padding * 2 - handlerWidth})
+            this.setState({distanceToDrag: switchWidth - padding * 2 - handlerWidth}, this.bind)
         })
 
         window.switchComponent = this
-        this.bind()
     }
 
     bind(): void {
