@@ -65,6 +65,7 @@
         width: 72px
         height: 64px
         align-self: flex-end
+        transition: transform .4s ease
         mask-image: url("/img/ico-gradient-arrow.svg")
         mask-repeat: no-repeat
         mask-size: contain
@@ -77,9 +78,6 @@
             animation-play-state: running
             cursor: pointer
 
-        > *:first-child
-            transition: transform .4s ease
-
-        &:disabled > *:first-child
+        &:disabled
             transform: translateX(32px)
             animation-play-state: running
