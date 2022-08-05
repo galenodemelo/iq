@@ -31,7 +31,7 @@
 
         @include for-mobile-down
             flex-direction: column
-            justify-content: center
+            justify-content: flex-end
             gap: 8%
             height: 100vh
 
@@ -40,19 +40,28 @@
             text-transform: lowercase
             font-weight: 700
 
-            @include for-desktop-up
+            @include for-big-desktop-up
+                font-size: 10rem
+                line-height: 1.2
+
+            @include for-desktop-only
                 font-size: 8vw
                 line-height: 1
-
-            @include for-ultrawide-desktop-up
-                line-height: .9
 
             @include for-mobile-down
                 font-size: 4rem
                 line-height: 1.3
 
             .gradient
-                margin: -4vh 0
+                @include for-big-desktop-up
+                    margin: -4.2rem 0
+
+                @include for-desktop-only
+                    margin: -4vh 0
+
+                @include for-mobile-down
+                    margin: -2rem 0
+
                 @include gradient-animation-properties
 
         .form
