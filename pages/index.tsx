@@ -5,7 +5,7 @@ import IndexLayout from "@layouts/index/IndexLayout"
 import { NextRouter, useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
-export default function IndexController(props: any) {
+export default function IndexController() {
     const router: NextRouter = useRouter()
     const [path, setPath] = useState<string>("/")
     useEffect(() => {

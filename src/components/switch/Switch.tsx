@@ -71,13 +71,13 @@ export default class Switch extends Component<Props, State> {
 
     bind(): void {
         this.switchObject?.addEventListener("pointerdown", (event: MouseEvent) => {
-            this.handlerObject!.classList.remove(styles.animated)
             this.followMouseMoving(event)
             document.addEventListener("pointermove", this.followMouseMoving, { passive: true })
             document.addEventListener("touchmove", this.followTouchMoving, { passive: true })
 
             document.addEventListener("pointerup", this.stopMouseMoving, { passive: true })
             document.addEventListener("touchend", this.stopMouseMoving, { passive: true })
+            this.handlerObject!.classList.remove(styles.animated)
         }, { passive: true })
     }
 
