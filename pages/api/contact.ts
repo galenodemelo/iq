@@ -23,13 +23,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             return
         }
 
-        const mailWasSent: boolean = await SendGridManager.send(
-            `Site contact form - ${requestData.fullName}`,
-            buildMailHtml(requestData),
-            requestData.email,
-            requestData.email
-        )
-        if (!mailWasSent && process.env.NODE_ENV != "development") {
+        const mailWasSent: boolean = await sendMail(requestData)
+        if (!mailWasSent) {
             res.status(500).json({success: false, errorList: ["Mail wasn't send. Please try again"]})
             return
         }
@@ -125,4 +120,15 @@ function buildMailHtml(requestData: ContactRequestDTO): string {
 
     return `<h1>Contact form</h1>
             ${fieldList.join("<br />")}`
+}
+
+async function sendMail(requestData: ContactRequestDTO): Promise<boolean> {
+    if (!SETTINGS.isSendgridActive) return true
+
+    return await SendGridManager.send(
+        `Site contact form - ${requestData.fullName}`,
+        buildMailHtml(requestData),
+        requestData.email,
+        requestData.email
+    )
 }
