@@ -28,7 +28,7 @@ export default class PoppingLetteringAnimation implements Animation {
             if (element.style.transform != "scale(1)") return
 
             element.style.transform = "none"
-            setTimeout(() => element.style.color = "transparent", 50)
+            setTimeout(() => element.style.color = "transparent", 100)
         })
     }
 
