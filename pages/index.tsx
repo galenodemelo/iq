@@ -8,17 +8,23 @@ import { useEffect, useState } from "react"
 export default function IndexController() {
     const router: NextRouter = useRouter()
     const [path, setPath] = useState<string>("/")
+    const successPageUrl: string = "/contact/success"
     useEffect(() => {
         if (!router.isReady) return
         setPath(router.asPath)
     }, [router])
+
+    const redirectToSuccessPage = () => {
+        setPath(successPageUrl)
+        router.push(successPageUrl, undefined, { shallow: true })
+    }
 
     return (
         <>
             <CustomHeader>
                 {path == "/" && <title>iQ - Powered by people</title>}
                 {path == "/contact" && <title>iQ - Contact us</title>}
-                {path == "/contact/success" &&
+                {path == successPageUrl &&
                     <>
                         <title>iQ - Thanks for contactins us</title>
                         <meta name="robots" content="noindex" />
@@ -27,8 +33,8 @@ export default function IndexController() {
             </CustomHeader>
 
             <IndexLayout active={path == "/"} />
-            <ContactLayout active={path == "/contact"} />
-            <ContactSuccessLayout active={path == "/contact/success"}  />
+            <ContactLayout active={path.startsWith("/contact")} onContactSubmitCallback={redirectToSuccessPage} />
+            <ContactSuccessLayout active={path == successPageUrl}  />
         </>
     )
 }

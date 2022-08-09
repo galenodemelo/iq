@@ -5,12 +5,16 @@ import CircleExpanding, { CircleExpandingProps } from "src/animations/CircleExpa
 import PoppingLetteringAnimation from "src/animations/PoppingLetteringAnimation"
 import styles from "./ContactLayout.module.sass"
 
-export default class ContactLayout extends CircleExpanding<CircleExpandingProps, any> {
+interface Props extends CircleExpandingProps {
+    onContactSubmitCallback?: Function
+}
+
+export default class ContactLayout extends CircleExpanding<Props, any> {
 
     letteringRef: React.RefObject<HTMLHeadingElement>
     letteringAnimation: PoppingLetteringAnimation
 
-    constructor(props: CircleExpandingProps) {
+    constructor(props: Props) {
         super(props)
         this.letteringRef = React.createRef<HTMLHeadingElement>()
         this.letteringAnimation = new PoppingLetteringAnimation(this.letteringRef, styles.gradient)
@@ -37,7 +41,7 @@ export default class ContactLayout extends CircleExpanding<CircleExpandingProps,
                     </h1>
 
                     <div className={styles.form}>
-                        <ContactForm />
+                        <ContactForm onSubmitCallback={this.props.onContactSubmitCallback} />
 
                         <footer className={styles.footer}>
                             &copy; iQ - Powered by People LLC.

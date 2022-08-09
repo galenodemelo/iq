@@ -3,16 +3,20 @@ import ReCAPTCHA from "react-google-recaptcha"
 import SETTINGS from "src/settings"
 import styles from "./ContactForm.module.sass"
 
-type State = {
+interface Props {
+    onSubmitCallback?: Function
+}
+
+interface State {
     isSubmiting: boolean
 }
 
-export default class ContactForm extends Component<any, State> {
+export default class ContactForm extends Component<Props, State> {
 
     formReference: React.RefObject<HTMLFormElement>
     recaptchaReference: React.RefObject<ReCAPTCHA>
 
-    constructor(props: {}) {
+    constructor(props: Props) {
         super(props)
         this.formReference = React.createRef<HTMLFormElement>()
         this.recaptchaReference = React.createRef<ReCAPTCHA>()
@@ -23,7 +27,6 @@ export default class ContactForm extends Component<any, State> {
 
     async send(): Promise<void> {
         if (!this.formReference.current) return
-        if (!this.recaptchaReference.current) return
         try {
             const isFormValid: boolean = this.formReference.current.reportValidity()
             if (!isFormValid) return
@@ -51,11 +54,10 @@ export default class ContactForm extends Component<any, State> {
                 return
             }
 
-            alert(responseJson.message)
+            if (this.props.onSubmitCallback) this.props.onSubmitCallback()
             this.formReference.current.reset()
         } catch (error) {
             console.error(error)
-            this.recaptchaReference.current.reset()
             alert("An unexpected error ocurred. Please, contact the support")
         } finally {
             this.resetRecaptchaIfNecessary()
