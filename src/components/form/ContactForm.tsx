@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
+import SETTINGS from "src/settings"
 import styles from "./ContactForm.module.sass"
 
 type State = {
@@ -29,14 +30,10 @@ export default class ContactForm extends Component<any, State> {
 
             this.setState({ isSubmiting: true })
 
-            const recaptchaToken: string | null = await this.recaptchaReference.current.executeAsync()
-            if (!recaptchaToken?.length) {
-                alert("Failed to verify ReCAPTCHA. Please, try again")
-                return
-            }
+            const recaptchaToken: string | null = await this.validateRecaptchaIfNecessary()
 
             const formData: FormData = new FormData(this.formReference.current)
-            formData.append("recaptchaToken", recaptchaToken)
+            if (recaptchaToken) formData.append("recaptchaToken", recaptchaToken)
 
             const formAction: string = this.formReference.current.getAttribute("action")!.toString()
             const formMethod: string = this.formReference.current.getAttribute("method")!.toString()
@@ -48,7 +45,7 @@ export default class ContactForm extends Component<any, State> {
                 body: formDataAsJson
             })
             const responseJson: { success: boolean, errorList?: Array<string>, message?: string } = await response.json()
-            this.recaptchaReference.current.reset()
+
             if (!responseJson.success) {
                 alert(responseJson.errorList?.join("\n"))
                 return
@@ -61,8 +58,29 @@ export default class ContactForm extends Component<any, State> {
             this.recaptchaReference.current.reset()
             alert("An unexpected error ocurred. Please, contact the support")
         } finally {
+            this.resetRecaptchaIfNecessary()
             this.setState({ isSubmiting: false })
         }
+    }
+
+    async validateRecaptchaIfNecessary(): Promise<string | null> {
+        if (!SETTINGS.isRecaptchaActive) return null
+        if (!this.recaptchaReference?.current) return null
+
+        const recaptchaToken: string | null = await this.recaptchaReference.current.executeAsync()
+        if (!recaptchaToken?.length) {
+            alert("Failed to verify ReCAPTCHA. Please, try again")
+            return null
+        }
+
+        return await this.recaptchaReference.current.executeAsync()
+    }
+
+    resetRecaptchaIfNecessary(): void {
+        if (!SETTINGS.isRecaptchaActive) return
+        if (!this.recaptchaReference.current) return
+
+        this.recaptchaReference.current.reset()
     }
 
     render(): ReactNode {
@@ -87,10 +105,12 @@ export default class ContactForm extends Component<any, State> {
                     Enviar
                 </button>
 
-                <ReCAPTCHA
-                    ref={this.recaptchaReference}
-                    size="invisible"
-                    sitekey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITEKEY ?? ""} />
+                {SETTINGS.isRecaptchaActive &&
+                    <ReCAPTCHA
+                        ref={this.recaptchaReference}
+                        size="invisible"
+                        sitekey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITEKEY ?? ""} />
+                }
             </form>
         )
     }

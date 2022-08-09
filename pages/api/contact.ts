@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js"
 import { NextApiRequest, NextApiResponse } from "next"
 import SendGridManager from "src/libs/SendGridManager"
+import SETTINGS from "src/settings"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
@@ -44,13 +45,14 @@ class ContactRequestDTO {
     fullName: string
     email: string
     phone: string
-    recaptchaToken: string
+    recaptchaToken: string = ""
 
     constructor(fullName: string, email: string, phone: string, recaptchaToken: string) {
         this.fullName = fullName.trim()
         this.email = email.trim()
         this.phone = phone.trim()
-        this.recaptchaToken = recaptchaToken.trim()
+
+        if (SETTINGS.isRecaptchaActive) this.recaptchaToken = recaptchaToken.trim()
     }
 }
 
@@ -64,7 +66,7 @@ async function validateRequestData(requestData: ContactRequestDTO): Promise<Arra
 
     if (!requestData.phone.length) errorList.push("Please inform your phone number")
 
-    if (!requestData.recaptchaToken.length) errorList.push("Missing ReCAPTCHA Token")
+    if (SETTINGS.isRecaptchaActive && !requestData.recaptchaToken.length) errorList.push("Missing ReCAPTCHA Token")
 
     if (!errorList.length) {
         const isRecaptchaValid: boolean = await validateRecaptchaToken(requestData.recaptchaToken)
@@ -75,6 +77,8 @@ async function validateRequestData(requestData: ContactRequestDTO): Promise<Arra
 }
 
 async function validateRecaptchaToken(recaptchaToken: string): Promise<boolean> {
+    if (!SETTINGS.isRecaptchaActive) return true
+
     const recaptchaUrl: string = "https://www.google.com/recaptcha/api/siteverify"
     const response: Response = await fetch(recaptchaUrl, {
         method: "POST",
