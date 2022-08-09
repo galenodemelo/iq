@@ -91,7 +91,7 @@ async function validateRecaptchaToken(recaptchaToken: string): Promise<boolean> 
 }
 
 async function storeInDatabase(requestData: ContactRequestDTO): Promise<boolean> {
-    if (process.env.NODE_ENV == "development") return true
+    if (!SETTINGS.isSupabaseActive) return true
 
     const supabaseUrl: string = process.env.SUPABASE_URL ?? ""
     const supabaseApiKey: string = process.env.SUPABASE_API_KEY ?? ""
