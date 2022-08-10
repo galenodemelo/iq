@@ -36,6 +36,8 @@ export default class PoppingLetteringAnimation implements Animation {
                     element.style.color = "transparent"
                 })
 
+                elementWithAnimation.classList.remove(this.classToFix ?? "")
+                elementWithAnimation.classList.add(this.classToFix ?? "")
                 setTimeout(() => elementWithAnimation.style.animationPlayState = "running", 150 * index + 100)
             })
         }
