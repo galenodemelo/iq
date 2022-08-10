@@ -6,6 +6,8 @@
     top: 0
     left: 0
     width: 100%
+    display: flex
+    align-items: center
     min-height: 100%
     background-color: $color-black
     z-index: 10
@@ -13,32 +15,25 @@
 
     .content
         display: flex
-        align-items: center
         @include centered-content
 
-        @include for-big-desktop-up
-            height: 85vh
-
-        @include for-desktop-only
-            height: 92vh
-
         @include for-desktop-up
+            align-items: flex-end
             justify-content: space-between
             gap: 15%
-            height: 100vh
-            padding-top: 5%
             box-sizing: border-box
 
         @include for-mobile-down
+            align-items: flex-start
             flex-direction: column
-            justify-content: flex-end
-            gap: 8%
-            height: 100vh
+            justify-content: center
+            row-gap: 80px
 
         .lettering
             color: #ffffff
             text-transform: lowercase
             font-weight: 700
+            margin-bottom: -3%
 
             @include for-big-desktop-up
                 font-size: 10rem
@@ -54,18 +49,17 @@
 
             .gradient
                 @include for-big-desktop-up
-                    margin: -4.2rem 0
+                    margin: -4.2rem 0 0
 
                 @include for-desktop-only
-                    margin: -4vh 0
+                    margin: -4vh 0 0
 
                 @include for-mobile-down
-                    margin: -2rem 0
+                    margin: -2rem 0 0
 
                 @include gradient-animation-properties
 
         .form
-            padding-top: 10%
             @include for-desktop-up
                 flex: 1 1 0
 

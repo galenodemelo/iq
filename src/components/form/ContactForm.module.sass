@@ -57,6 +57,10 @@
         align-self: flex-end
         color: #ffffff
 
+        @include for-mobile-down
+            > br
+                display: none
+
     .btoSubmit
         display: block
         position: relative
