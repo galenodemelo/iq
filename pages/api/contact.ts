@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js"
 import { NextApiRequest, NextApiResponse } from "next"
-import SendGridManager from "src/libs/SendGridManager"
+import * as nodemailer from "nodemailer"
 import SETTINGS from "src/settings"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -123,12 +123,30 @@ function buildMailHtml(requestData: ContactRequestDTO): string {
 }
 
 async function sendMail(requestData: ContactRequestDTO): Promise<boolean> {
-    if (!SETTINGS.isSendgridActive) return true
+    try {
+        if (!SETTINGS.isMailSenderActive) return true
 
-    return await SendGridManager.send(
-        `Site contact form - ${requestData.fullName}`,
-        buildMailHtml(requestData),
-        requestData.email,
-        requestData.email
-    )
+        const transporter: nodemailer.Transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: parseInt(process.env.SMTP_PORT?.toString() ?? ""),
+            secure: true,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            }
+        })
+
+        await transporter.sendMail({
+            from: { name: "IQ Concept Landing Page", address: process.env.SMTP_USER ?? ""},
+            to: process.env.CONTACT_FORM_RECEIVER,
+            cc: requestData.email,
+            subject: `IQ Concept Contact - ${requestData.fullName}`,
+            html: buildMailHtml(requestData)
+        })
+
+        return true
+    } catch (error) {
+        console.error("contact.sendMail >> Unexpected error", error)
+        return false
+    }
 }
