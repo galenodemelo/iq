@@ -10,7 +10,7 @@ export default class PoppingLetteringAnimation implements Animation {
 
     letterClass: string = "poppingLetteringLetter"
     targetClass: string = `.${this.letterClass}`
-    onUpdate: Function = () => {}
+    onCompleted: Function = () => {}
 
     constructor(target: React.RefObject<HTMLElement>, classToFix: string | null = null) {
         this.target = target
@@ -18,18 +18,27 @@ export default class PoppingLetteringAnimation implements Animation {
     }
 
     fixGradientLettering(): void {
-        const elementList: NodeListOf<HTMLElement> = document.querySelectorAll(`.${this.classToFix} ${this.targetClass}`)
-        elementList.forEach((element: HTMLElement, index: number) => {
-            element.style.color = "#1EBD98"
-            element.style.animationPlayState = "paused"
+        const elementWithAnimationList: NodeListOf<HTMLElement> = document.querySelectorAll(`.${this.classToFix}`)
+        elementWithAnimationList.forEach((elementWithAnimation: HTMLElement) => {
+            elementWithAnimation.style.animationPlayState = "paused"
+
+            const elementList: NodeListOf<HTMLElement> = elementWithAnimation.querySelectorAll(this.targetClass)
+            elementList.forEach((element: HTMLElement) => {
+                element.style.color = "#ee7752"
+            })
         })
 
-        this.onUpdate = (anime: AnimeInstance) => elementList.forEach(element => {
-            if (element.style.transform != "scale(1)") return
+        this.onCompleted = (anime: AnimeInstance) => {
+            elementWithAnimationList.forEach((elementWithAnimation: HTMLElement, index: number) => {
+                const elementList: NodeListOf<HTMLElement> = elementWithAnimation.querySelectorAll(this.targetClass)
+                elementList.forEach((element: HTMLElement) => {
+                    element.style.transform = "unset"
+                    element.style.color = "transparent"
+                })
 
-            element.style.transform = "none"
-            setTimeout(() => element.style.color = "transparent", 100)
-        })
+                setTimeout(() => elementWithAnimation.style.animationPlayState = "running", 150 * index + 100)
+            })
+        }
     }
 
     async run(): Promise<void> {
@@ -44,7 +53,7 @@ export default class PoppingLetteringAnimation implements Animation {
             scale: [0, 1],
             duration: 1500,
             delay: (el, i) => 50 * (i+1),
-            update: (anime) => this.onUpdate(anime)
+            complete: (anime) => this.onCompleted(anime)
         }).finished
     }
 
