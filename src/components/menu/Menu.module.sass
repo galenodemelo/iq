@@ -8,11 +8,22 @@
     left: 0
     right: 0
     z-index: 10
-    @include centered-content
+    margin: 0 auto
+    width: 100%
+    max-width: 90%
+    box-sizing: border-box
+
+    @include for-big-desktop-up
+        max-width: 1600px
 
     @include for-desktop-up
         top: 48px
 
     @include for-mobile-down
         top: 16px
-        max-width: 90%
+
+    @include for-desktop-only
+        max-width: 1080px
+
+    @include for-ultrawide-desktop-up
+        max-width: 150vh
