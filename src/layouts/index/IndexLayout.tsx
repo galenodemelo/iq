@@ -17,14 +17,11 @@ interface State {
 
 export default class IndexLayout extends Component<Props, State> {
 
-    backdropRef
-    videoPlayerRef
+    backdropRef = React.createRef<HTMLDivElement>()
+    videoPlayerRef = React.createRef<HTMLVideoElement>()
 
     constructor(props: Props) {
         super(props)
-
-        this.backdropRef = React.createRef<HTMLDivElement>()
-        this.videoPlayerRef = React.createRef<HTMLVideoElement>()
 
         this.state = {
             active: props.active,
@@ -37,7 +34,11 @@ export default class IndexLayout extends Component<Props, State> {
     componentDidUpdate(): void {
         if (this.props.active != this.state.active) {
             this.setState({ active: this.props.active }, () => {
-                if (!this.state.active) this.toggleMuted(true)
+                if (!this.state.active) {
+                    this.toggleMuted(true)
+                } else {
+                    this.videoPlayerRef.current?.play()
+                }
             })
         }
     }
@@ -52,11 +53,11 @@ export default class IndexLayout extends Component<Props, State> {
 
         setTimeout(() => {
             this.backdropRef.current?.remove()
-            this.setState({showMenu: true})
+            this.setState({ showMenu: true })
         }, 1000)
     }
 
-    toggleMuted = (state ?: boolean) => this.setState({ muted: state !== undefined ? state : !this.state.muted })
+    toggleMuted = (state?: boolean) => this.setState({ muted: state !== undefined ? state : !this.state.muted })
 
     render(): React.ReactNode {
         return (
@@ -69,13 +70,13 @@ export default class IndexLayout extends Component<Props, State> {
 
                 <div className={styles.content}>
                     <MediaQuery orientation="landscape">
-                        <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef}>
+                        <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef} playsInline={true}>
                             <source src="/videos/teaser.1920.mp4" type="video/mp4" />
                         </video>
                     </MediaQuery>
 
                     <MediaQuery orientation="portrait">
-                        <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef} data-mobile>
+                        <video className={styles.video} controls={false} preload="auto" muted={this.state.muted} loop={true} ref={this.videoPlayerRef} playsInline={true} data-mobile>
                             <source src="/videos/teaser.vertical.webm" type="video/webm" />
                             <source src="/videos/teaser.vertical.mp4" type="video/mp4" />
                         </video>
