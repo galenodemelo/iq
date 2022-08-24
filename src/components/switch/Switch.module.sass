@@ -7,7 +7,6 @@
     padding: 6px 16px 8px 12px
     background: rgb(15,17,19)
     background: linear-gradient(180deg, rgba(15,17,19,1) 0%, rgba(28,33,34,1) 100%)
-    max-width: 80%
     box-shadow: -18px -13px 28px 0px rgba(255,255,255,0.1), 7px 15px 38px 0px rgba(0,0,0,0.89)
     border: #191b1d solid 5px
     border-left: 3px
@@ -19,7 +18,8 @@
         border-radius: 96px
 
     @include for-mobile-down
-        height: 64px
+        height: 44px
+        width: 200px
         border-radius: 64px
 
     .activeBackground
@@ -55,9 +55,9 @@
             letter-spacing: .6rem
 
         @include for-mobile-down
-            padding: .5rem 2rem 0
-            font-size: 1.5rem
-            letter-spacing: .3rem
+            padding: .5rem 1.1rem 0
+            font-size: 1rem
+            letter-spacing: 4px
 
     .poweredOn
         left: 0
@@ -77,15 +77,16 @@
         border-radius: 100%
         background-color: #0b0a0a
         cursor: move
-        box-shadow: inset -7px -5px 24px 11px #24201E, 2px 3px 0px 3px #121109, 5px 15px 30px 9px #000000
 
         @include for-desktop-up
             height: 96px
             width: 96px
+            box-shadow: inset -7px -5px 24px 11px #24201E, 2px 3px 0px 3px #121109, 5px 15px 30px 9px #000000
 
         @include for-mobile-down
-            height: 64px
-            width: 64px
+            height: 44px
+            width: 44px
+            box-shadow: inset 1px 1px 4px 0px #24201e, 1px 1px 0px 2px #121109, 5px 10px 24px 1px #000000
 
         &.animated
             animation-name: there-and-back-again-right
