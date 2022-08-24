@@ -3,8 +3,7 @@
 
 .switch
     position: relative
-    width: 500px
-    padding: 6px 16px 8px 12px
+    width: 540px
     background: rgb(15,17,19)
     background: linear-gradient(180deg, rgba(15,17,19,1) 0%, rgba(28,33,34,1) 100%)
     box-shadow: -18px -13px 28px 0px rgba(255,255,255,0.1), 7px 15px 38px 0px rgba(0,0,0,0.89)
@@ -14,10 +13,12 @@
     overflow: hidden
 
     @include for-desktop-up
-        height: 96px
-        border-radius: 96px
+        padding: 24px
+        height: 112px
+        border-radius: 112px
 
     @include for-mobile-down
+        padding: 6px 16px 8px 12px
         height: 44px
         width: 200px
         border-radius: 64px
@@ -79,8 +80,8 @@
         cursor: move
 
         @include for-desktop-up
-            height: 96px
-            width: 96px
+            height: 112px
+            width: 112px
             box-shadow: inset -7px -5px 24px 11px #24201E, 2px 3px 0px 3px #121109, 5px 15px 30px 9px #000000
 
         @include for-mobile-down
