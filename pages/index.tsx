@@ -26,7 +26,7 @@ export default function IndexController() {
                 {path == "/contact" && <title>iQ - Contact us</title>}
                 {path == successPageUrl &&
                     <>
-                        <title>iQ - Thanks for contactins us</title>
+                        <title>iQ - Thanks for contacting us</title>
                         <meta name="robots" content="noindex" />
                     </>
                 }
